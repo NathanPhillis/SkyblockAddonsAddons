@@ -6,14 +6,22 @@ class SkyblockAddonsAddons {
     inSkyblock = false;
 
     constructor(debug) {
-        this.config = JSON.parse(FileLib.read('Skyblock Addons Addons','config.json'));;
-        this.debug = debug;
+        ChatLib.chat(ChatLib.getChatBreak());
+        this.announce('Loading Skyblock Addons^2!')
+        this.announce('');
 
+        this.config = JSON.parse(FileLib.read('SkyblockAddonsAddons','config.json'));;
+        this.debug = debug;
+        
+
+        this.announce('Initializing Features:');
         //Initialise features
-        features.push(
-            new SDT(this, this.config.features.slayerDropsTracker),
-            //new...
+        this.addFeature(
+            new SDT(this, this.config.features.slayerDropsTracker)
         );
+
+        this.announce('');
+        
 
         register('worldLoad',()=>{
             //Wait for scoreboard to load
@@ -25,32 +33,28 @@ class SkyblockAddonsAddons {
                     this.setInSkyblock(false);
                 }
             },50);
-            
-            
-        }).setCriteria('Sending to server ${serverName}...');
+        });
 
-        //Debug
-        register('command', ()=>{
-            if (feature[1].config.isEnabled) {
-                feature[1].disable();
-            } else {
-                feature[1].enable();
-            }
-        }).setName('togglesdt');
+        this.announce('Skyblock Addons^2 has sucessfully loaded!');
+        ChatLib.chat(ChatLib.getChatBreak());
     }
 
     setInSkyblock(inSkyblock) {
         //Activate features if in skyblock
         if (inSkyblock) {
-            features.forEach(feature => {
-                feature.active = true;
+            this.features.forEach(feature => {
+                feature.setActive(true);
             });
         } else {
-            features.forEach(feature => {
-                feature.active = false;
+            this.features.forEach(feature => {
+                feature.setActive(false);
             });
         }
         this.inSkyblock = inSkyblock;
+    }
+
+    addFeature(...feature) {
+        Array.prototype.push.apply(feature, this.features);
     }
 
     announce(text) {

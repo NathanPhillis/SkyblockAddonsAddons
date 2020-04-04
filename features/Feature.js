@@ -8,9 +8,14 @@ export default class Feature {
 
         this.setupTriggers();
         this.setActive(false);
+
+        //Debug
+        if (SAA.debug) {
+            SAA.announce(config.name + ": " + ( config.isEnabled ? "&a" : "&c" ) + config.isEnabled);
+        }
     }
 
-    //Deprecated (do not call!)
+    //Override this!
     setupTriggers() {
         
     }

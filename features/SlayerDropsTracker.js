@@ -24,6 +24,7 @@ export default class SlayerDropsTracker extends Feature {
 
     }
 
+    //If the player is not in skyblock, we do not want the triggers active
     setActive(active) {
         super.setActive(active);
         this.SAA.announce(active);
@@ -38,6 +39,7 @@ export default class SlayerDropsTracker extends Feature {
         }
     }
 
+    //Enable or disable the feature in config
     enable() {
         super.enable();
 
