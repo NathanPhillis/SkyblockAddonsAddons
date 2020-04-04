@@ -1,0 +1,30 @@
+{
+    "itemrarities": [
+        {
+            "revenantFlesh": 0,
+            "foulFlesh": 2,
+            "undeadCatalyst": 2,
+            "smite6": 0,
+            "revenantCatalyst": 3,
+            "snakeRune": 4,
+            "beheadedHorror": 3,
+            "scytheBlade": 4,
+
+            "tarantulaWeb": 0,
+            "toxicArrowPoison": 1,
+            "biteRune": 1,
+            "baneOfArthropods6": 0,
+            "flySwatter": 3,
+            "tarantulaTalisman": 3,
+            "digestedMosquito": 4,
+
+            "wolfTooth": 0,
+            "hampsterWheels": 2,
+            "critical6": 0,
+            "redClawEgg": 3,
+            "coutureRune": 4,
+            "grizzlyBait": 3,
+            "overfluxCapacitor": 4
+        }
+    ]
+}

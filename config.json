@@ -1,0 +1,55 @@
+{
+    "features": {
+        "slayerDropsTracker": {
+            "isEnabled": true,
+            "settings": {}
+        }
+    },
+    "settings": {
+        "firstTime": true
+    },
+    "data": {
+        "slayers": {
+            "revenant": {
+                "xp": 0,
+                "drops": {
+                    "revenantFlesh": 0,
+                    "foulFlesh": 0,
+                    "undeadCatalyst": 0,
+                    "smite6": 0,
+                    "revenantCatalyst": 0,
+                    "snakeRune": 0,
+                    "beheadedHorror": 0,
+                    "scytheBlade": 0
+                },
+                "profit": 0
+            },
+            "tarantula": {
+                "xp": 0,
+                "drops": {
+                    "tarantulaWeb": 0,
+                    "toxicArrowPoison": 0,
+                    "biteRune": 0,
+                    "baneOfArthropods 6": 0,
+                    "flySwatter": 0,
+                    "tarantulaTalisman": 0,
+                    "digestedMosquito": 0
+                },
+                "profit": 0
+            },
+            "sven": {
+                "xp": 0,
+                "drops": {
+                    "wolfTooth": 0,
+                    "hampsterWheels": 0,
+                    "critical6": 0,
+                    "redClawEgg": 0,
+                    "coutureRune": 0,
+                    "grizzlyBait": 0,
+                    "overfluxCapacitor": 0
+                },
+                "profit": 0
+            }
+        }        
+    }
+}

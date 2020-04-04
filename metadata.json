@@ -1,0 +1,7 @@
+{
+    "name":"Skyblock Addons Addons",
+    "description":"Even more usful gameplay addons for use with Hypixel's popular Skyblock gamemode.",
+    "version": "1.0.0",
+    "entry": "index.js",
+    "requires": []
+}  
