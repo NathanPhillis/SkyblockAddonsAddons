@@ -6,43 +6,53 @@ export default class SkyblockAddonsAddons {
     inSkyblock = false;
 
     constructor(debug = false) {
-        if (debug) {
-            ChatLib.chat(ChatLib.getChatBreak());
-            this.announce('Loading Skyblock Addons^2!')
-                .announce('');
-        }
-
-        this.config = JSON.parse(FileLib.read('SkyblockAddonsAddons','config.json'));;
         this.debug = debug;
         
+        this.debugDivider()
+            .debugAnnounce('Loading Skyblock Addons^2!','a')
+            .debugAnnounce('');
 
-        if (debug) {
-            this.announce('Initializing Features:');
-        }
+        this.config = JSON.parse(FileLib.read('SkyblockAddonsAddons','config.json'));;
+        
+        this.debugAnnounce('Initializing Features:');
+        
         //Initialise features
-        this.addFeature(
-            new SlayerDropsTracker(this, this.config.features.slayerDropsTracker)
+        this._addFeature(
+            new SlayerDropsTracker(this, this.config.features.slayerDropsTracker),
         );
         
-        if (debug) {
-            this.announce('')
-                .announce('Skyblock Addons^2 has sucessfully loaded!');
-            ChatLib.chat(ChatLib.getChatBreak());
-        }
+        register('worldLoad',(e)=>{
+            this._testInSkyblock(10);
+        });
+        
+        this.debugAnnounce('')
+            .debugAnnounce('Skyblock Addons^2 has sucessfully loaded!')
+            .debugDivider();
+    }
 
-        register('worldLoad',()=>{
-            //Wait for scoreboard to load
-            setTimeout(()=>{
-                //Check if in skyblock
-                if ((ChatLib.removeFormatting(Scoreboard.getTitle()) == 'SKYBLOCK' && Server.getIP().endsWith('hypixel.net'))) {
+    _testInSkyblock(attempts) {
+        setTimeout(()=>{
+            if (attempts > 0) {
+                console.log(attempts);
+                if (this._isInSkyblock()) {
                     this.setInSkyblock(true)
                         .announce('In Skyblock.');
                 } else {
-                    this.setInSkyblock(false)
-                        .announce('Not in Skyblock');
+                    this.announce('Not in Skyblock.');
+                    this._testInSkyblock(--attempts);
                 }
-            },500);
-        });
+            } else if (attempts == 0) {
+                this.setInSkyblock(false)
+            }
+        }, 1000);
+    }
+
+    _isInSkyblock() {
+        hasMenu = Player.getInventory().getStackInSlot(8).getName().includes('SkyBlock Menu');
+        hasScoreboard = ChatLib.removeFormatting(Scoreboard.getTitle()) == 'SKYBLOCK';
+        inHypixel = Server.getIP().endsWith('hypixel.net');
+
+        return inHypixel && (hasMenu || hasScoreboard);
     }
 
     setInSkyblock(inSkyblock) {
@@ -52,22 +62,45 @@ export default class SkyblockAddonsAddons {
                 feature.setActive(inSkyblock);
             });
 
-            if (this.debug) {
-                this.announce('All features ' + ( inSkyblock ? 'activated' : 'deactivated' ) + '!');
-            }
+            this.debugAnnounce('All features ' + ( inSkyblock ? 'activated' : 'deactivated' ) + '!');
             this.inSkyblock = inSkyblock;
         } 
         return this;
     }
 
-    addFeature(...feature) {
+    _addFeature(...feature) {
         this.features.push(...feature);
         return this;
     }
 
-    announce(text) {
-        console.log('SAA: ' + text);
-        ChatLib.chat('&c&lSAA:&f ' + text);
+    announce(...lines) {
+        for (line in lines) {
+            console.log('SAA: ' + line);
+            
+        }
+
+        //TODO: REWORK TO USE MESSAGES
+        m = new Message('&c&lSAA:&f ');
+        m.chat();
+        return this;
+    }
+
+    debugAnnounce(text) {
+        if (this.debug) {
+            this.announce(text);
+        }
+        return this;
+    }
+
+    divider() {
+        ChatLib.chat(ChatLib.getChatBreak());
+        return this;
+    }
+
+    debugDivider() {
+        if (this.debug) {
+            this.divider();
+        }
         return this;
     }
 
@@ -76,5 +109,4 @@ export default class SkyblockAddonsAddons {
         ChatLib.chat('&c&lSAA ERROR:&f ' + error);
         return this;
     }
-
 }

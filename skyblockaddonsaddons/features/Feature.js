@@ -16,9 +16,7 @@ export default class Feature {
         */
 
         //Debug
-        if (this.SAA.debug) {
-            this.SAA.announce(config.name + ': ' + (config.isEnabled ? '&aOn' : '&cOff' ));
-        }
+        this.SAA.debugAnnounce(config.name + ': ' + (config.isEnabled ? '&aOn' : '&cOff' ));
     }
 
     //Override this!
@@ -33,7 +31,7 @@ export default class Feature {
     //If the player is not in skyblock, we do not want the triggers active
     setActive(active) {
         // Don't activate if the feature is disabled
-        if (this.config.isEnabled) {
+        if (this.config.isEnabled && this.active != active) {
             //Register or unregister each trigger
             this.triggers.forEach((trigger)=>{
                 if (active) {
@@ -44,9 +42,7 @@ export default class Feature {
             });
             this.active = active;
 
-            if (this.SAA.debug) {
-                this.SAA.announce(this.config.name + (active ? ' activated!' : ' deactivated!'));
-            }
+                this.SAA.debugAnnounce(this.config.name + (active ? ' activated!' : ' deactivated!'));
         }
     }
 
@@ -65,9 +61,7 @@ export default class Feature {
             this.setActive(isEnabled);
             this.config.isEnabled = isEnabled;
             
-            if (this.SAA.debug) {
-                this.SAA.announce(this.config.name + (isEnabled ? ' enabled!' : ' disabled!'));
-            }
+            this.SAA.debugAnnounce(this.config.name + (isEnabled ? ' enabled!' : ' disabled!'));
         } else {
             this.SAA.error(this.config.name + ' is already ' + (isEnabled ? 'enabled!' : 'disabled!'), this);
         }

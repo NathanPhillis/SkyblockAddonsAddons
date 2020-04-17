@@ -1,6 +1,8 @@
 import Item from '../util/item.js';
 import Feature from './Feature.js';
 
+a=0;
+
 export default class SlayerDropsTracker extends Feature {
     
     //TODO: First time setup
@@ -15,15 +17,14 @@ export default class SlayerDropsTracker extends Feature {
     }
 
     setupTriggers() {
-        this.SAA.announce('lol');
-
-        chatTrigger = TriggerRegister.registerChat(this.onChat);
+        chatTrigger = register('chat', this.onChat.bind(this)).unregister();
+        
         this.triggers.push(
             chatTrigger
             //...
         );
     }
-
+    
     onChat() {
         
     }
