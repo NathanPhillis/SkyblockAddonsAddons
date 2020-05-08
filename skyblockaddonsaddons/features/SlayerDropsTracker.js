@@ -1,12 +1,9 @@
-import Item from '../util/item.js';
+import Item from '../util/inventory/item.js';
 import Feature from './Feature.js';
 
-a=0;
-
 export default class SlayerDropsTracker extends Feature {
-    
-    //TODO: First time setup
 
+    //TODO: First time setup
     constructor(SAA, config) {
         super(SAA, config);
 
@@ -18,16 +15,14 @@ export default class SlayerDropsTracker extends Feature {
 
     setupTriggers() {
         chatTrigger = register('chat', this.onChat.bind(this)).unregister();
-        
+
         this.triggers.push(
             chatTrigger
             //...
         );
     }
-    
-    onChat() {
-        
-    }
+
+    onChat() { }
 
     //TEMPORARY FIX REMOVE LATER!!!!
     setEnabled(isEnabled) {
@@ -38,6 +33,4 @@ export default class SlayerDropsTracker extends Feature {
             }
         }
     }
-
-
 }

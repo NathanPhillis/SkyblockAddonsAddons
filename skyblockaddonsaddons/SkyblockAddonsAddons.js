@@ -1,48 +1,45 @@
+import CMessage from './util/chat/Message.js';
 import SlayerDropsTracker from './features/SlayerDropsTracker.js';
 
 export default class SkyblockAddonsAddons {
-
     features = [];
     inSkyblock = false;
 
     constructor(debug = false) {
         this.debug = debug;
-        
-        this.debugDivider()
-            .debugAnnounce('Loading Skyblock Addons^2!','a')
-            .debugAnnounce('');
 
-        this.config = JSON.parse(FileLib.read('SkyblockAddonsAddons','config.json'));;
-        
-        this.debugAnnounce('Initializing Features:');
-        
-        //Initialise features
-        this._addFeature(
-            new SlayerDropsTracker(this, this.config.features.slayerDropsTracker),
+        new CMessage(
+            '/div',
+            'Loading Skyblock Addons^2',
+            '',
         );
-        
-        register('worldLoad',(e)=>{
+
+        this.config = JSON.parse(FileLib.read('SkyblockAddonsAddons', 'config.json'));
+
+        this.debugAnnounce('Initializing Features:');
+
+        //Initialise features
+        this._addFeature(new SlayerDropsTracker(this, this.config.features.slayerDropsTracker));
+
+        register('worldLoad', (e) => {
             this._testInSkyblock(10);
         });
-        
-        this.debugAnnounce('')
-            .debugAnnounce('Skyblock Addons^2 has sucessfully loaded!')
-            .debugDivider();
+
+        this.debugAnnounce('').debugAnnounce('Skyblock Addons^2 has sucessfully loaded!').debugDivider();
     }
 
     _testInSkyblock(attempts) {
-        setTimeout(()=>{
+        setTimeout(() => {
             if (attempts > 0) {
                 console.log(attempts);
                 if (this._isInSkyblock()) {
-                    this.setInSkyblock(true)
-                        .announce('In Skyblock.');
+                    this.setInSkyblock(true).announce('In Skyblock.');
                 } else {
                     this.announce('Not in Skyblock.');
                     this._testInSkyblock(--attempts);
                 }
             } else if (attempts == 0) {
-                this.setInSkyblock(false)
+                this.setInSkyblock(false);
             }
         }, 1000);
     }
@@ -58,13 +55,13 @@ export default class SkyblockAddonsAddons {
     setInSkyblock(inSkyblock) {
         //Activate features if in skyblock
         if (inSkyblock != this.inSkyblock) {
-            this.features.forEach((feature)=>{
+            this.features.forEach((feature) => {
                 feature.setActive(inSkyblock);
             });
 
-            this.debugAnnounce('All features ' + ( inSkyblock ? 'activated' : 'deactivated' ) + '!');
+            this.debugAnnounce('All features ' + (inSkyblock ? 'activated' : 'deactivated') + '!');
             this.inSkyblock = inSkyblock;
-        } 
+        }
         return this;
     }
 
@@ -76,7 +73,6 @@ export default class SkyblockAddonsAddons {
     announce(...lines) {
         for (line in lines) {
             console.log('SAA: ' + line);
-            
         }
 
         //TODO: REWORK TO USE MESSAGES
