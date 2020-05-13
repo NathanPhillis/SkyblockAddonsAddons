@@ -1,5 +1,6 @@
 import CMessage from './util/chat/Message.js';
 import SlayerDropsTracker from './features/SlayerDropsTracker.js';
+import ChatManager from './util/chat/chatmanager.js';
 
 export default class SkyblockAddonsAddons {
     features = [];
@@ -7,6 +8,9 @@ export default class SkyblockAddonsAddons {
 
     constructor(debug = false) {
         this.debug = debug;
+
+        // Initializes chat system
+        new ChatManager();
 
         new CMessage(
             '/div',
@@ -16,38 +20,51 @@ export default class SkyblockAddonsAddons {
 
         this.config = JSON.parse(FileLib.read('SkyblockAddonsAddons', 'config.json'));
 
-        this.debugAnnounce('Initializing Features:');
+        new CMessage(
+            'Initializing Features:'
+        );
 
-        //Initialise features
+        //Initialize features
         this._addFeature(new SlayerDropsTracker(this, this.config.features.slayerDropsTracker));
 
         register('worldLoad', (e) => {
             this._testInSkyblock(10);
         });
 
-        this.debugAnnounce('').debugAnnounce('Skyblock Addons^2 has sucessfully loaded!').debugDivider();
+        new CMessage(
+            '',
+            'Skyblock Addons^2 has sucessfully loaded!',
+            '/div'
+        );
     }
 
-    _testInSkyblock(attempts) {
+    _testInSkyblock(attempts, message) {
         setTimeout(() => {
             if (attempts > 0) {
-                console.log(attempts);
-                if (this._isInSkyblock()) {
-                    this.setInSkyblock(true).announce('In Skyblock.');
+                if (message == null) {
+                    message = new CMessage('Not in Skyblock! [' + attempts + ']');
                 } else {
-                    this.announce('Not in Skyblock.');
-                    this._testInSkyblock(--attempts);
+                    message.editLine('Not in Skyblock! [' + attempts + ']')
+                }
+                if (this._isInSkyblock()) {
+                    new CMessage('In Skyblock!');
+                    this.setInSkyblock(true);
+                    message.delete();
+                } else {
+
+                    this._testInSkyblock(--attempts, message);
                 }
             } else if (attempts == 0) {
                 this.setInSkyblock(false);
+                message.delete();
             }
         }, 1000);
     }
 
     _isInSkyblock() {
-        hasMenu = Player.getInventory().getStackInSlot(8).getName().includes('SkyBlock Menu');
-        hasScoreboard = ChatLib.removeFormatting(Scoreboard.getTitle()) == 'SKYBLOCK';
-        inHypixel = Server.getIP().endsWith('hypixel.net');
+        let hasMenu = Player.getInventory().getStackInSlot(8).getName().includes('SkyBlock Menu');
+        let hasScoreboard = ChatLib.removeFormatting(Scoreboard.getTitle()) == 'SKYBLOCK';
+        let inHypixel = Server.getIP().endsWith('hypixel.net');
 
         return inHypixel && (hasMenu || hasScoreboard);
     }
@@ -58,26 +75,16 @@ export default class SkyblockAddonsAddons {
             this.features.forEach((feature) => {
                 feature.setActive(inSkyblock);
             });
-
-            this.debugAnnounce('All features ' + (inSkyblock ? 'activated' : 'deactivated') + '!');
             this.inSkyblock = inSkyblock;
+            new CMessage(
+                'All features ' + (inSkyblock ? 'activated' : 'deactivated') + '!'
+            );
         }
         return this;
     }
 
     _addFeature(...feature) {
         this.features.push(...feature);
-        return this;
-    }
-
-    announce(...lines) {
-        for (line in lines) {
-            console.log('SAA: ' + line);
-        }
-
-        //TODO: REWORK TO USE MESSAGES
-        m = new Message('&c&lSAA:&f ');
-        m.chat();
         return this;
     }
 

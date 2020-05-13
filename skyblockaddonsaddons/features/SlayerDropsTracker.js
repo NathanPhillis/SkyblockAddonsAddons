@@ -14,7 +14,7 @@ export default class SlayerDropsTracker extends Feature {
     }
 
     setupTriggers() {
-        chatTrigger = register('chat', this.onChat.bind(this)).unregister();
+        let chatTrigger = register('chat', this.onChat.bind(this)).unregister();
 
         this.triggers.push(
             chatTrigger

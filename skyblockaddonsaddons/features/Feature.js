@@ -1,3 +1,5 @@
+import CMessage from "../util/chat/Message";
+
 export default class Feature {
     triggers = [];
 
@@ -15,11 +17,11 @@ export default class Feature {
         */
 
         //Debug
-        this.SAA.debugAnnounce(config.name + ': ' + (config.isEnabled ? '&aOn' : '&cOff'));
+        new CMessage(config.name + ': ' + (config.isEnabled ? '&aOn' : '&cOff'));
     }
 
     //Override this!
-    setupTriggers() {}
+    setupTriggers() { }
 
     //Trigger methods go here:
 
@@ -39,7 +41,7 @@ export default class Feature {
             });
             this.active = active;
 
-            this.SAA.debugAnnounce(this.config.name + (active ? ' activated!' : ' deactivated!'));
+            new CMessage(this.config.name + (active ? ' activated!' : ' deactivated!'));
         }
     }
 
@@ -56,7 +58,7 @@ export default class Feature {
             this.setActive(isEnabled);
             this.config.isEnabled = isEnabled;
 
-            this.SAA.debugAnnounce(this.config.name + (isEnabled ? ' enabled!' : ' disabled!'));
+            new CMessage(this.config.name + (isEnabled ? ' enabled!' : ' disabled!'));
         } else {
             this.SAA.error(this.config.name + ' is already ' + (isEnabled ? 'enabled!' : 'disabled!'), this);
         }
