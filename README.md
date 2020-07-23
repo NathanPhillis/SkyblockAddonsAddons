@@ -1,2 +1,2 @@
-# SkyblockAddonsAddons
-A collection of even more addons for Hypixel's popular Skyblock gamemode
+# SBGUI
+A better interface, as well as many smaller features for Hypixel's popular Skyblock gamemode.
